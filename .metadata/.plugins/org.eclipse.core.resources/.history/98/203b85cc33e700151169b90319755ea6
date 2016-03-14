@@ -1,0 +1,70 @@
+package day7;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class dropdowntest 
+{
+
+	public static void main(String[] args) 
+	{
+		boolean flag = false;
+		WebDriver driver=new FirefoxDriver();
+		driver.get("http://www.khuranatravel.com/");
+		WebElement fc=driver.findElement(By.id("fromCity"));
+		
+		Select fromcity=new Select(fc);
+		
+		List<WebElement> fromcitylist=fromcity.getOptions();
+		
+		int fromcitycount=fromcitylist.size();
+		System.out.println(fromcitycount);
+		//loop for from dropdown
+		for (int i = 0; i < fromcitycount; i++) 
+		{
+			fromcity.selectByIndex(i);
+			String from=fromcitylist.get(i).getText();
+			System.out.println(from);
+			//loop for to city dropdown
+			Select tocity=new Select(driver.findElement(By.id("toCity")));
+			List<WebElement> tocitylist=tocity.getOptions();
+			int tocitycount=tocitylist.size();
+			
+			for (int j = 0; j < tocitycount; j++) 
+			{
+				tocity.selectByIndex(j);
+				String to=tocitylist.get(j).getText();
+				
+				if (from.equals(to)) 
+				{
+					flag=true;
+					break;
+				}
+				else
+				{
+					flag=false;
+				}
+				
+			}
+			if (flag==true)
+			{
+				System.out.println("Fly from check fail: "+from+ "is present in to city list");
+				
+			}
+			else
+			{
+				System.out.println("Fly from check pass: "+from+ "is not present in to city list");
+			}
+			
+			
+		}
+		
+
+	}
+
+}
